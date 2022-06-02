@@ -1,0 +1,8 @@
+DEF funcion1:
+	BEGIN
+		INT Contador;
+		Contador ++;
+		Contador ++;
+		RETURN Contador;
+	END
+

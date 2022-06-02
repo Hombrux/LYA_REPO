@@ -1,0 +1,9 @@
+DEF funcion1:
+	BEGIN
+		INT a, b, c;
+		a = 10;
+		b = 5;
+		c = a + b;
+		RETURN c;	
+	END
+

@@ -87,13 +87,13 @@ t_LLAVEABIERTO = r'\{'
 t_LLAVECERRADO = r'\}'
 t_CORCHETEABIERTO = r'\['
 t_CORCHETECERRADO = r'\]'
-t_ESPACIO = r'\s'
+#t_ESPACIO = r'\s'
 
 t_INCREMENTO = r'\+\+'
 t_DECREMENTO = r'\-\-'
 
 def t_ID(t):
-    r'@[a-zA-Z_][a-zA-Z0-9_]*'
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value.upper() in reservadas:
         t.value = t.value.upper()
         t.type = t.value
@@ -115,9 +115,10 @@ def t_COMENTARIO(t):
 def t_error(t):
     t.value = t.value[0]
     t.lexer.skip(1)
-    return t
+    pass
 
 a = []
+b = []
 
 def analiza(cadena):
     analizador = lex.lex()
@@ -126,6 +127,7 @@ def analiza(cadena):
     while True:
         tok = analizador.token()
         if not tok : break
+        b.append(tok)
         a.append(str(tok))
     return a
 
@@ -139,6 +141,13 @@ def analizaar():
         concatena += i + '\n'
     txtBox2.delete('1.0', END)
     txtBox2.insert(END, concatena)
+
+def anasintactico(tokL,tipo,next):
+    if(next.type != 'ID'):
+        print('Token Inesperado, se esperaba otro tipo de token: ID | Linea:'+str(tokL.lineno))
+        return
+    if(next.token().type != ';'):
+        print('Token Inesperado, se esperaba otro tipo de token: ; | Linea:'+str(tokL.lineno))   
 
 def limpiar1 ():
     txtBox1.delete('1.0', END)
@@ -175,7 +184,16 @@ def colorear(Palabra,color):
             print(l)
         
         i+=1
-    
+def BuscarS():
+    #l = locals()
+    #print(l)
+    i=0
+    while i<=len(b)-1:
+        if b[i].type == "INT":
+            if i+1 <= len(b):
+                anasintactico(b[i],b[i].type,b[i+1])
+        i+=1     
+
 def BuscarP(event):
     contenido = txtBox1.get(1.0,'end-1c')
     contenido = contenido.upper()
@@ -348,8 +366,12 @@ lbl2.grid(row = 3, column = 0)
 txtBox2 = ScrolledText()
 txtBox2.grid(row = 4, column = 0)
 
-btn = Button(ventana, text = "Analizar", command = analizaar)
+btn = Button(ventana, text = "Analizar Lexico", command = analizaar)
 btn.grid(column=1,row=2)
+
+btn = Button(ventana, text = "Analizar Sintaxis", command = BuscarS)
+btn.grid(column=1,row=3)
+
 
 #Menú
 filemenu = Menu(menubar, tearoff=0)

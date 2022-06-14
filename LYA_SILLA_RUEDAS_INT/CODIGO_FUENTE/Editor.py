@@ -20,9 +20,7 @@ import AnalizadorLexico as al
 import AnalizadorSintactico as asx
 
 '''
-a) Falta quitar comentarios del boton Analizar porque aun no conecto el archivo 
-   para analizar el lexico.
-b) ...   
+a) ...   
 '''
 
 #=============== Analasis Lexico y Sintactico ===============
@@ -36,8 +34,28 @@ def analizar():
         concatena += i + '\n'
     txtBox3.delete('1.0', END)
     txtBox3.insert(END, concatena)
+
     if(concatena == ""):
         txtBox3.insert(END, 'Completado Exitosamente')
+    '''
+    else:
+        #Etiquetas para los errores
+        i=0
+        while(len(asx.Errores)>i):
+            n = str(i)
+            f = str(i+1)
+            txtBox3.tag_add('Error'+n,n+'.0',f+'.end - 1c')
+            txtBox3.tag_config('Error'+n,underline=True)
+            txtBox3.tag_bind('Error'+n,'<Button-1>',lambda event,x='feakpelon.png':imagen(None,x))
+            i+=1
+    '''        
+
+            
+def imagen(event,img):
+    ruta='../ARCHIVOS/IMAGENES/'+img
+    automata = PhotoImage(file=img)
+    
+                
 
 
 #===================== COLOREAR =======================

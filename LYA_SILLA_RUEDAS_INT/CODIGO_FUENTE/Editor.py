@@ -1,5 +1,6 @@
 #Importaciones
 from ast import Global
+from asyncio import events
 from ctypes import alignment
 from threading import local
 from tkinter.scrolledtext import ScrolledText
@@ -7,6 +8,10 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
 from tkinter import filedialog
+from functools import partial
+#from PIL import Image 
+
+from setuptools import Command
 import lex
 import re
 import codecs
@@ -21,6 +26,7 @@ import AnalizadorSintactico as asx
 
 '''
 a) ...   
+
 '''
 
 #=============== Analasis Lexico y Sintactico ===============
@@ -30,31 +36,70 @@ def analizar():
     
     #Imprimir los errores sintacticos 
     concatena=""
-    for i in asx.Errores:
-        concatena += i + '\n'
+    i=0
+    while(len(asx.Errores)>i):
+        concatena += asx.Errores[i] + '\n'
+        i+=2
+    #print(asx.Errores)       
     txtBox3.delete('1.0', END)
     txtBox3.insert(END, concatena)
 
     if(concatena == ""):
         txtBox3.insert(END, 'Completado Exitosamente')
-    '''
+    
     else:
         #Etiquetas para los errores
         i=0
+        ie=0
         while(len(asx.Errores)>i):
-            n = str(i)
-            f = str(i+1)
+            n = str(ie)
+            f = str(ie+1)
+            imge = asx.Errores[i+1]
             txtBox3.tag_add('Error'+n,n+'.0',f+'.end - 1c')
             txtBox3.tag_config('Error'+n,underline=True)
-            txtBox3.tag_bind('Error'+n,'<Button-1>',lambda event,x='feakpelon.png':imagen(None,x))
-            i+=1
-    '''        
-
+           
+            weboz = partial(getInx,numero=imge)
+            txtBox3.tag_bind('Error'+n,'<Button-3>',imagen)
+            txtBox3.tag_bind('Error'+n,'<Button-1>',weboz)
             
-def imagen(event,img):
-    ruta='../ARCHIVOS/IMAGENES/'+img
-    automata = PhotoImage(file=img)
-    
+
+            ie+=1
+            i+=2
+        
+
+
+#RUTA PARA LAS IMAGENES
+base_folder = os.path.dirname(__file__)
+a = base_folder.split(os.sep)
+a[len(a)-1]= 'ARCHIVOS'+os.sep+'IMAGENES'
+base_folder = ''
+i=0
+while(i<len(a)):
+    base_folder+= a[i] + os.sep
+    i+=1
+
+global lista
+lista=[]
+#Guardar los indices de las imagenes
+def getInx(event,numero):
+    lista.append(numero)
+    #print(lista)
+    #print(len(lista))
+
+#Desplegar las imagenes
+def imagen(event):
+    global lista
+    if not lista:
+        return
+    img = lista[0]
+    ruta=base_folder+img
+    lista.clear()
+    ##global automata
+    automata = PhotoImage(file=ruta)
+    c.configure(image=automata)#image=PhotoImage(file=ruta))
+    c.image=automata
+    c.pack(fill=BOTH)
+    im.update_idletasks()
                 
 
 
@@ -64,9 +109,7 @@ def colorear(Palabra,color):
     contenido = contenido.upper()
     palabras = contenido.split()
     indiceInicial = "1.0"
-    #tagFeak = 'feak'
-    #CuatroFeak = 4
-  
+
     i=0
 
     while i<len(palabras):
@@ -79,10 +122,6 @@ def colorear(Palabra,color):
             txtBox1.tag_add(Palabra+str(i),iniFeak,inxFin)
             txtBox1.tag_config(Palabra+str(i),foreground=color)
             indiceInicial=inxFin 
-
-            #l = locals()
-            #print(l)
-        
         i+=1
 
 
@@ -90,8 +129,7 @@ def BuscarP(event):
     contenido = txtBox1.get(1.0,'end-1c')
     contenido = contenido.upper()
     palabras = contenido.split()
-    #l = locals()
-    #print(l)
+
     i=0
     while i<len(palabras):
         if palabras[i] == "IMPORT":
@@ -241,11 +279,12 @@ def Voz():
 
 #Ventana y cosas
 ventana = Tk()
-ventana.geometry("1366x768")
+ventana.geometry("1920x1080")
 ventana.title("Compilador")
 ventana.state('zoomed')
 ventana.resizable(0,0) 
 ventana.configure(background='#777777') 
+ventana.grid_propagate(False)
 
 menubar = Menu(ventana)
 ventana.config(menu = menubar)
@@ -264,6 +303,7 @@ frameBotones.config(background='#777777')
 
 #No. Lineas
 txtNo = Text(my_frame,width = 2, height = 35)
+txtNo.pack_propagate(False)
 txtNo.pack(fill=BOTH, side=LEFT)
 txtNo.insert(1.0, '1')
 
@@ -292,12 +332,22 @@ txtBox1.configure(font=myFont)
 txtNo.configure(font=myFont)        
 
 
+im = Frame(ventana,width=175,height=550)
+im.grid(column=2,row=1)
+im.pack_propagate(False)
+
+
 lbl2 = Label(ventana, text = "Tokens: ")
 lbl2.grid(column= 2, row = 0)
 lbl2.configure(background='#777777')
-txtBox2 = Text(width = 40, height = 34)
-txtBox2.grid(column= 2, row = 1,padx=50)
+txtBox2 = Text(im,width = 40, height = 25)
+#txtBox2.grid(column= 2, row = 1,padx=50)
 txtBox2.configure(background='#adadad')
+txtBox2.pack(side=TOP)
+
+
+c = Label(im)
+
 
 lbl3 = Label(ventana, text = "Terminal: ")
 lbl3.grid(column= 0, row = 2)
@@ -319,10 +369,10 @@ def AumentarFuente(event):
 
 #===================== MENUS =======================
 filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="Nuevo")
-filemenu.add_command(label="Abrir")
-filemenu.add_command(label="Guardar")
-filemenu.add_command(label="Guardar como...")
+filemenu.add_command(label="Nuevo",command=file1)
+filemenu.add_command(label="Abrir",command=openfile)
+filemenu.add_command(label="Guardar",command=savefile)
+filemenu.add_command(label="Guardar como...",command=savefileas)
 filemenu.add_separator()
 filemenu.add_command(label="Salir", command = ventana.quit)
 
@@ -330,7 +380,7 @@ editmenu = Menu(menubar, tearoff=0)
 editmenu.add_command(label="Cortar")
 editmenu.add_command(label="Copiar")
 editmenu.add_command(label="Pegar")
-editmenu.add_command(label="Tamaño fuente")
+
 
 voicemenu = Menu(menubar, tearoff=0)
 voicemenu.add_command(label="Grabacion",)
@@ -347,7 +397,7 @@ menubar.add_cascade(label="Ayuda", menu = helpmenu)
 
 #Activan los eventos para agrandar Letra, enumerar filas y colorear tokens
 txtBox1.bind('<Return>',contarLineas)
-txtBox1.bind('<MouseWheel>',AumentarFuente)
+txtBox1.bind('<Control-MouseWheel>',AumentarFuente)
 txtBox1.bind('<Key-space>',BuscarP)
 
 ventana.mainloop()

@@ -41,6 +41,8 @@ reservadas =  [
     'FLOAT',
     'BOOLEAN',
     'STRING',
+    'TRUE',
+    'FALSE',
 
     'POWER',
     'SQRT',

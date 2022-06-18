@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
-from tkinter import Image, ttk
+from tkinter import ttk
+from PIL import ImageTk,Image 
 
 class App(tk.Tk):
     def __init__(self):
@@ -13,9 +14,8 @@ class App(tk.Tk):
         while(i<len(a)):
             base_folder+= a[i] + os.sep
             i+=1
-        
-        self.python_image = tk.PhotoImage(file= base_folder+'AutomataINT.png')
-        
+        #new_pic = ImageTK.PhotoImage(Image.open("images/aspen.png").resize((300, 225), Image.ANTIALIAS))
+        self.python_image = ImageTk.PhotoImage(Image.open(base_folder+'AutomataINT.png').resize((40, 25)), Image.ANTIALIAS)
         
         ttk.Label(self, image=self.python_image).pack()
 

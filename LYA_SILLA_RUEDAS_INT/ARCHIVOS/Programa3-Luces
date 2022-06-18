@@ -1,0 +1,68 @@
+#ex: turn the lights on with standard on 5 level for 100 seconds
+
+int intensidad = 5;#intensidad media por default (5/10)
+int encendido = 1;#0->apagado, 1->encendido
+string patron = "estandar";#estandar por default
+int tiempo = 100;#el usuario puede decidir la cantidad de tiempo a usar la luz
+		
+def luces(intensidad,encendido,patron,tiempo){
+begin
+	boolean state = true;
+	int iluminacion;
+	int c = 1;
+	
+	if(encendido == 0){
+		iluminacion = 0;
+	}
+	
+	#patron estandar
+	if(patron == estandar and encendido == 1){
+		iluminacion = intensidad;
+	}
+	
+	#patron fade away
+	if(patron == fade and encendido == 1){
+		while(state == true){
+			while(intensidad >= 0){
+				intensidad--;
+				c++;
+			}
+			while(intensidad <= 10){
+				intensidad++;
+				c++;
+			}
+			#por default tiene un temporizador para apagar el patron
+			if(c == tiempo){
+				state = false;
+			}
+		}#while	
+	}#if principal
+	
+	#otro patron para las luces
+	if(patron == alternado and encendido == 1){
+		int z = 0;
+		c = 0;
+		while(state == true){
+			if(c == 0){
+				intensidad = 10;
+			}
+			#Crear un temporizador para alternar
+			while(c < 10){
+				c++;
+				z++;
+			}
+			if(c == 10){
+				intesidad = 0;
+			}
+			while(c > 0){
+				c--;
+				z++;
+			}
+			if(z == timepo){
+				state = false;
+			}
+		}#while
+	}
+	#if
+end
+}#def luces

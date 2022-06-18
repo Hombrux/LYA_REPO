@@ -1,0 +1,82 @@
+#ex: turn the massager on with standard on lumbar zone,8 level for 200 seconds
+
+int nivel = 8;#intensidad (8/10)
+int encendido = 1;#0->apagado, 1->encendido
+string patron = "estandar";#estandar por default
+int tiempo = 200;#el usuario puede decidir la cantidad de tiempo a usar
+string zona = "lumbar";
+		
+def masajeador(nivel,encendido,patron,tiempo,zona){
+begin
+	boolean state = true;
+	int potencia;
+	int a;#especifica el area donde se realiza el masaje
+	int c = 1;
+	
+	if(encendido == 0){
+		potencia = 0;
+	}
+	
+	if(zona == lumbar){
+		a = 1;
+	}
+
+	if(zona == dorsal){
+		a = 2;
+	}
+
+	if(zona == alta){
+		a = 3;
+	}	
+
+	#patron estandar
+	if(patron == estandar and encendido == 1){
+		potencia = nivel;
+	}
+	
+	#patron fade away
+	if(patron == fade and encendido == 1){
+		while(state == true){
+			while(nivel >= 0){
+				nivel--;
+				c++;
+			}
+			while(nivel <= 10){
+				nivel++;
+				c++;
+			}
+			#temporizador
+			if(c == tiempo){
+				state = false;
+			}
+		}#while	
+	}#if principal
+	
+	#otro patron
+	if(patron == alternado and encendido == 1){
+		int z = 0;
+		c = 0;
+		while(state == true){
+			if(c == 0){
+				nivel = 10;
+			}
+			#Crear un temporizador para alternar
+			while(c < 5){
+				c++;
+				z++;
+			}
+			if(c == 5){
+				nivel = 0;
+			}
+			while(c > 0){
+				c--;
+				z++;
+			}
+			if(z == timepo){
+				state = false;
+			}
+		}#while
+	}
+	#if
+end
+}#def masajeador

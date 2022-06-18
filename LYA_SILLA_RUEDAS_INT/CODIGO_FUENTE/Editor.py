@@ -1,25 +1,15 @@
 #Importaciones
-from ast import Global
-from asyncio import events
-from ctypes import alignment
-from threading import local
+from tkinter import *
+from PIL import ImageTk, Image 
 from tkinter.scrolledtext import ScrolledText
-import tkinter as tk
-from tkinter import ttk
-import tkinter.font as tkFont
 from tkinter import filedialog
 from functools import partial
-#from PIL import Image 
 
-from setuptools import Command
-import lex
-import re
-import codecs
 import os
-import sys
-from tkinter import *
-from turtle import width
+import re
 import speech_recognition as sr
+import tkinter as tk
+import tkinter.font as tkFont
 
 import AnalizadorLexico as al
 import AnalizadorSintactico as asx
@@ -94,13 +84,13 @@ def imagen(event):
     img = lista[0]
     ruta=base_folder+img
     lista.clear()
-    ##global automata
-    automata = PhotoImage(file=ruta)
+    imagen = Image.open(ruta)
+    imgRes = imagen.resize((200,200), Image.ANTIALIAS)
+    automata = ImageTk.PhotoImage(imgRes)
     c.configure(image=automata)#image=PhotoImage(file=ruta))
     c.image=automata
     c.pack(fill=BOTH)
     im.update_idletasks()
-                
 
 
 #===================== COLOREAR =======================
@@ -116,14 +106,14 @@ def colorear(Palabra,color):
         
         if palabras[i] == Palabra:
             #Busca la palabra
-            iniFeak = txtBox1.search(Palabra,index=indiceInicial ,stopindex='end',nocase=True,count=len(Palabra))
+            iniFeak = txtBox1.search(Palabra,index=indiceInicial ,stopindex='end',nocase=True,count=len(Palabra),regexp=True)
             inxFin = iniFeak + " + "+ str(len(Palabra)) +"c" 
+            
             #Crear una etiqueta para el color 
             txtBox1.tag_add(Palabra+str(i),iniFeak,inxFin)
             txtBox1.tag_config(Palabra+str(i),foreground=color)
             indiceInicial=inxFin 
         i+=1
-
 
 def BuscarP(event):
     contenido = txtBox1.get(1.0,'end-1c')
@@ -332,7 +322,7 @@ txtBox1.configure(font=myFont)
 txtNo.configure(font=myFont)        
 
 
-im = Frame(ventana,width=175,height=550)
+im = Frame(ventana,width=200,height=550)
 im.grid(column=2,row=1)
 im.pack_propagate(False)
 

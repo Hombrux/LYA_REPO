@@ -31,7 +31,16 @@ def BuscarS(tokens):
         if tokens[i].type == "POWER":
             gPOWER(tokens,i) 
         if tokens[i].type == "SQRT":
-            gSQRT(tokens,i)    
+            gSQRT(tokens,i)
+        if tokens[i].type == "MULTIPLICACION":
+            gAritmeticos(tokens,i)
+        if tokens[i].type == "DIVISION":
+            gAritmeticos(tokens,i)
+        if tokens[i].type == "SUMA":
+            gAritmeticos(tokens,i)
+        if tokens[i].type == "RESTA":
+            gAritmeticos(tokens,i)    
+
         if tokens[i].type == "LLAVECERRADO":
            llavesFaltantes-=1       
         i+=1
@@ -42,6 +51,25 @@ def BuscarS(tokens):
     if llavesFaltantes<0 and (not Errores):
         Errores.append('Sobran '+str(abs(llavesFaltantes))+' llaves de cerradura.')
 
+#======================OPERADORES ARITMETICOS=========================
+def gAritmeticos(t,i):
+    if(len(t)>i+1):
+        if((t[i+1].type != 'ID') and (t[i+1].type != 'NUMERO')):
+            Errores.append('Token Inesperado:'+str(t[i+1].value)+' '+str(t[i+1].type)+', se esperaba otro tipo de token: ID o NUMERO | Linea:'+str(t[i+1].lineno) +' Columna:'+str(t[i+1].lexpos))
+            Errores.append('AutomataARITMETICOS.png')
+            return
+    else:
+        Errores.append('Error: se espera un tipo de token: ID o NUMERO | Linea:'+str(t[i].lineno) +' Columna:'+str(t[i].lexpos))
+        Errores.append('AutomataARITMETICOS.png')
+        return
+    if(len(t)>i+2):
+        if(t[len(t)-1].type != 'PUNTOCOMA'):
+            Errores.append('Token Inesperado:'+str(t[i+1].value)+', se esperaba otro tipo de token: ; | Linea:'+str(t[i+2].lineno) +' Columna:'+str(t[i+2].lexpos))
+            Errores.append('AutomataARITMETICOS.png')
+    else: 
+        Errores.append('Error: se espera un tipo de token: ; | Linea:'+str(t[i+1].lineno) +' Columna:'+str(t[i+1].lexpos))
+        Errores.append('AutomataARITMETICOS.png')
+        
 #========================== Declarar INT ==========================
 def gINT(t,i):
     #Cantidad de elementos len(t)
@@ -173,7 +201,7 @@ def gAsignBOOLEAN(t,i):
     if(len(t)>i+1):
         if((t[i+1].type != 'TRUE') and (t[i+1].type != 'FALSE')):
             Errores.append('Token Inesperado:'+str(t[i+1].value)+' '+str(t[i+1].type)+', se esperaba otro tipo de token: TRUE o FALSE | Linea:'+str(t[i+1].lineno) +' Columna:'+str(t[i+1].lexpos))
-            Errores.append('AutomataBOOLEAN.png')
+            Errores.append('AutomataBOOLEAN.jpg')
             return  
     else:
         Errores.append('Error: se espera un tipo de token: TRUE o FALSE | Linea:'+str(t[i].lineno) +' Columna:'+str(t[i].lexpos))
@@ -361,12 +389,12 @@ def Condicion(t,i):
         return 0  
 
     if(len(t)>i+3):
-        if((t[i+3].type != 'ID') and (t[i+3].type != 'NUMERO')):
-            Errores.append('Token Inesperado:'+str(t[i+3].value)+' '+str(t[i+3].type)+', se esperaba un tipo de token: ID o NUMERO | Linea:'+str(t[i+3].lineno) +' Columna:'+str(t[i+3].lexpos))
+        if((t[i+3].type != 'ID') and (t[i+3].type != 'NUMERO') and (t[i+3].type != 'FALSE') and (t[i+3].type != 'TRUE')):
+            Errores.append('Token Inesperado:'+str(t[i+3].value)+' '+str(t[i+3].type)+', se esperaba un tipo de token: ID, NUMERO o VALOR BOOLEANO | Linea:'+str(t[i+3].lineno) +' Columna:'+str(t[i+3].lexpos))
             Errores.append('AutomataCONDICION.png')
             return 0 
     else:
-        Errores.append('Error: se espera un tipo de token: ID o NUMERO | Linea:'+str(t[i+2].lineno) +' Columna:'+str(t[i+2].lexpos))
+        Errores.append('Error: se espera un tipo de token: ID, NUMERO o VALOR BOOLEANO | Linea:'+str(t[i+2].lineno) +' Columna:'+str(t[i+2].lexpos))
         Errores.append('AutomataCONDICION.png')
         return 0
 
@@ -729,3 +757,15 @@ def gSQRT(t,i):
     else:
         Errores.append('Error: se espera un tipo de token: PARENTESISCERRADO ")" | Linea:'+str(t[i].lineno) +' Columna:'+str(t[i].lexpos))     
         Errores.append('AutomataSQRT.png')
+
+#================= INCREMENTO / DECREMENTO =================
+def gIncDec(t,i):
+    if(len(t)>i+1):
+        if(t[i+1].type != 'PUNTOCOMA'):
+            Errores.append('Token Inesperado:'+str(t[i+1].value)+' '+str(t[i+1].type)+', se esperaba otro tipo de token: ; | Linea:'+str(t[i+1].lineno) +' Columna:'+str(t[i+1].lexpos))
+            Errores.append('feakpelon.png')
+            return
+    else:
+        Errores.append('Error: se espera un tipo de token: ; | Linea:'+str(t[i].lineno) +' Columna:'+str(t[i].lexpos))
+        Errores.append('feakpelon.png')
+        return

@@ -85,7 +85,7 @@ def imagen(event):
     ruta=base_folder+img
     lista.clear()
     imagen = Image.open(ruta)
-    imgRes = imagen.resize((200,200), Image.ANTIALIAS)
+    imgRes = imagen.resize((400,200), Image.ANTIALIAS)
     automata = ImageTk.PhotoImage(imgRes)
     c.configure(image=automata)#image=PhotoImage(file=ruta))
     c.image=automata
@@ -257,9 +257,9 @@ def Voz():
         audio = r.listen(source)
  
     try:
-        text = r.recognize_google(audio)
+        text = r.recognize_google(audio, language='es-MX').lower()
         print('You said: {}'.format(text))
-        txtBox1.insert('1.0',text)
+        txtBox1.insert(END,text)
         
     except:
         print('Sorry could not hear')
@@ -322,16 +322,15 @@ txtBox1.configure(font=myFont)
 txtNo.configure(font=myFont)        
 
 
-im = Frame(ventana,width=200,height=550)
+im = Frame(ventana,width=400,height=550)
 im.grid(column=2,row=1)
 im.pack_propagate(False)
-
 
 lbl2 = Label(ventana, text = "Tokens: ")
 lbl2.grid(column= 2, row = 0)
 lbl2.configure(background='#777777')
-txtBox2 = Text(im,width = 40, height = 25)
-#txtBox2.grid(column= 2, row = 1,padx=50)
+txtBox2 = Text(im,width = 50, height = 22)
+txtBox2.grid(column= 2, row = 1,padx=50)
 txtBox2.configure(background='#adadad')
 txtBox2.pack(side=TOP)
 
@@ -373,7 +372,7 @@ editmenu.add_command(label="Pegar")
 
 
 voicemenu = Menu(menubar, tearoff=0)
-voicemenu.add_command(label="Grabacion",)
+voicemenu.add_command(label="Grabacion",command=Voz)
 
 helpmenu = Menu(menubar, tearoff=0)
 helpmenu.add_command(label="Ayuda")

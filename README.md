@@ -1,4 +1,4 @@
-# LYA_REPO
+# LYA_SILLA_RUEDAS_INT
 Lenguajes y Automatas 1
 
 Requisitos:

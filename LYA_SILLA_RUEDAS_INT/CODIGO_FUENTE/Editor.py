@@ -55,7 +55,8 @@ def analizar():
 
             ie+=1
             i+=2
-        
+    c.configure(image = None)
+    c.image = None    
 
 
 #RUTA PARA LAS IMAGENES

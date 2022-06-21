@@ -218,7 +218,7 @@ def openfile():
         
         txtBox1.edit_modified(0)              
         openfile()   
-#===============0=========Guardar como==========================
+#========================Guardar como==========================
 def savefile():    
     try:
         
@@ -254,16 +254,59 @@ def Voz():
     r = sr.Recognizer() 
 
     with sr.Microphone() as source:
-        print('Speak Anything : ')
+        print('Habla: ')
         audio = r.listen(source)
  
     try:
         text = r.recognize_google(audio, language='es-MX').lower()
-        print('You said: {}'.format(text))
+        print('Lo que dijo: {}'.format(text))
+
+        text = text.replace('abre paréntesis', '(')
+        text = text.replace('cerrar paréntesis', ')')
+        text = text.replace('abre corchete', '[')
+        text = text.replace('cerrar corchetes', ']')
+        text = text.replace('abre llave', '{\n')
+        text = text.replace('cerrar llave', '}\n')
+        text = text.replace('letra', '')
+        text = text.replace('punto y coma', ';\n')
+        text = text.replace('punto', '.')
+        text = text.replace('comilla', '\'')
+        text = text.replace('coma', ',\n')
+        text = text.replace('fin de comentario', '\n')
+        text = text.replace('comentario', '#')
+        text = text.replace('mayor o igual que', '>=')
+        text = text.replace('menor o igual que', '<=')
+        text = text.replace('mayor que', '>')
+        text = text.replace('menor que', '<')
+        text = text.replace('á', 'a')
+        text = text.replace('é', 'e')
+        text = text.replace('í', 'i')
+        text = text.replace('ó', 'o')
+        text = text.replace('ú', 'u')
+        text = text.replace('sino', 'ELSE')
+        text = text.replace('si', 'IF')
+        text = text.replace('mas', '+')
+        text = text.replace('menos', '-')
+        text = text.replace('por', '*')
+        text = text.replace('entre', '/')
+        text = text.replace('diferente', '!=')
+        text = text.replace('iniciar', 'BEGIN\n')
+        text = text.replace('terminar', 'END\n')
+        text = text.replace('terminal', 'END\n')
+        text = text.replace('mientras', 'WHILE')
+        text = text.replace('do', 'DO')
+        text = text.replace('definir', 'DEF')
+        text = text.replace('clase', 'CLASS')
+        text = text.replace('entero', 'INT')
+        text = text.replace('flotante', 'FLT')
+        text = text.replace('cadena', 'STR')
+        text = text.replace('igual', '=')
+
         txtBox1.insert(END,text)
+
         
     except:
-        print('Sorry could not hear')
+        print('No te pude escuchar')
     BuscarP(event=None)    
 
     

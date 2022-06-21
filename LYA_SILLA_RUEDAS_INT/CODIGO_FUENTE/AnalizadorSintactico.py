@@ -62,13 +62,6 @@ def gAritmeticos(t,i):
         Errores.append('Error: se espera un tipo de token: ID o NUMERO | Linea:'+str(t[i].lineno) +' Columna:'+str(t[i].lexpos))
         Errores.append('AutomataARITMETICOS.png')
         return
-    # if(len(t)>i+2):
-    #     if(t[len(t)-1].type != 'PUNTOCOMA'):
-    #         Errores.append('Token Inesperado:'+str(t[i+1].value)+', se esperaba otro tipo de token: ; | Linea:'+str(t[i+2].lineno) +' Columna:'+str(t[i+2].lexpos))
-    #         Errores.append('AutomataARITMETICOS.png')
-    # else:
-    #     Errores.append('Error: se espera un tipo de token: ; | Linea:'+str(t[i+1].lineno) +' Columna:'+str(t[i+1].lexpos))
-    #     Errores.append('AutomataARITMETICOS.png')
 
 #========================== Declarar INT ==========================
 def gINT(t,i):

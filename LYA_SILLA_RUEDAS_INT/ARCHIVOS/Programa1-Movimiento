@@ -13,7 +13,11 @@ begin
 	 if(detectarObstaculo==TRUE){
 	   girar(10);
 	 }
-      }		
+      }	
+      for(int i=0; i < 100; i++){
+         destinoX ++;
+      }
   }		
 }		
 end
+

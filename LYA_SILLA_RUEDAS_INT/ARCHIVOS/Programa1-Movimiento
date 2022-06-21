@@ -1,0 +1,19 @@
+begin
+  class moverHacia{
+    def mover(grados,distancia){
+      int destinoX;
+      int destinoY;
+      destinoX = posX + cos(x) * distancia;
+      destinoY = posY + sin(x) * distancia;
+      girar(grados);
+      while(posX!=destinoX AND posY!=destinoY){
+	 if(detectarObstaculo==FALSE){
+	   avanzar();
+	 }
+	 if(detectarObstaculo==TRUE){
+	   girar(10);
+	 }
+      }		
+  }		
+}		
+end
